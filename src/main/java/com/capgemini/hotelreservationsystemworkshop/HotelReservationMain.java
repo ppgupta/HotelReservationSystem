@@ -2,6 +2,7 @@ package com.capgemini.hotelreservationsystemworkshop;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,18 +19,28 @@ public class HotelReservationMain
 	}
 	// method to find cheapest hotel with in a date range
 	
-	public Hotel findCheapestHotel(Date start, Date end, long weekDays) {
-		long noOfDays = (1 + (end.getTime() - start.getTime())) / (1000 * 60 * 60 * 24);
+	public Hotel findCheapestBestRatedHotel(Date start, Date end, long weekDays) {
+		long noOfDays = 1 + (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
 		long weekEnds = noOfDays - weekDays;
 		System.out.println("Weekdays: " + weekDays + " Weekends: " + weekEnds);
 		for (Hotel h : hotelList) {
-			long totalCostOfStay = (weekDays * h.getRegularCustomerRateForWeekday())
+			long totalCostOfStay = ((weekDays) * h.getRegularCustomerRateForWeekday())
 					+ (weekEnds * h.getRegularCustomerRateForWeekend());
 			h.setTotalRate(totalCostOfStay);
 
 		}
-		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate)).findFirst()
-				.orElse(null);
+		List<Hotel> listOfBestRatedHotels = hotelList.stream().sorted(Comparator.comparing(Hotel::getRating))
+				.collect(Collectors.toList());
+
+		Hotel cheapestHotel = listOfBestRatedHotels.get(0);
+		for (Hotel hotel : listOfBestRatedHotels) {
+			if (hotel.getTotalRate() <= cheapestHotel.getTotalRate()) {
+				if (hotel.getRating() > cheapestHotel.getRating())
+					cheapestHotel = hotel;
+			} else
+				break;
+		}
+
 		return cheapestHotel;
 	}
 	
