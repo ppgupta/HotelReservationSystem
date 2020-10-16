@@ -2,7 +2,10 @@ package com.capgemini.hotelreservationsystemworkshop;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
 public class HotelReservationMain 
 {
 	private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
@@ -11,6 +14,24 @@ public class HotelReservationMain
 		hotelList.add(newHotel);
 		return true;
 	}
+	public int findMinimumPrice() {
+		int minPrice = hotelList.get(0).calculatePrice();
+		for (Hotel hotel : hotelList) {
+			int price = hotel.calculatePrice();
+			if (price < minPrice)
+				minPrice = price;
+		}
+		return minPrice;
+	}
+
+	public String findTheCheapestHotel() {
+		for (Hotel hotel : hotelList) {
+			if (findMinimumPrice() == hotel.calculatePrice())
+				return hotel.getHotelName();
+		}
+		return null;
+	}
+	
 	
 	 public  String display()
 	    {  
