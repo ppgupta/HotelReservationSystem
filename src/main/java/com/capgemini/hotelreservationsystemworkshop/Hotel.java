@@ -6,20 +6,23 @@ import java.time.format.DateTimeFormatter;
 
 public class Hotel {
 	private String hotelName;
-	private int regularCustomerRate;
-	private long totalRate;
 	private int regularCustomerRateForWeekday;
 	private int regularCustomerRateForWeekend;
+	private long totalRate;
 	private double rating;
+	private int rewardCustomerRateForWeekday;
+	private int rewardCustomerRateForWeekend;
 
 	// parameterized constructor
-	
-	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend,double rating) {
+	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend,
+			int rewardCustomerRateForWeekday, int rewardCustomerRateForWeekend, double rating) {
 		this.hotelName = hotelName;
 		this.regularCustomerRateForWeekday = regularCustomerRateForWeekday;
 		this.regularCustomerRateForWeekend = regularCustomerRateForWeekend;
 		this.totalRate = 0;
 		this.rating = rating;
+		this.rewardCustomerRateForWeekday = rewardCustomerRateForWeekday;
+		this.rewardCustomerRateForWeekend = rewardCustomerRateForWeekend;
 
 	}
 	// getters and setters
@@ -31,20 +34,6 @@ public class Hotel {
 		this.hotelName = hotelName;
 	}
 
-	public int getRegularCustomerRate() {
-		return regularCustomerRate;
-	}
-
-	public void setRegularCustomerRate(int rate) {
-		this.regularCustomerRate = rate;
-	}
-	public long getTotalRate() {
-		return totalRate;
-	}
-
-	public void setTotalRate(long totalCostOfStay) {
-		this.totalRate = totalCostOfStay;
-	}
 	public int getRegularCustomerRateForWeekday() {
 		return regularCustomerRateForWeekday;
 	}
@@ -60,6 +49,32 @@ public class Hotel {
 	public void setRegularCustomerRateForWeekend(int rate) {
 		this.regularCustomerRateForWeekend = rate;
 	}
+
+	public int getRewardCustomerRateForWeekday() {
+		return rewardCustomerRateForWeekday;
+	}
+
+	public void setRewardCustomerRateForWeekday(int rate) {
+		this.rewardCustomerRateForWeekday = rate;
+	}
+
+	public int getRewardCustomerRateForWeekend() {
+		return rewardCustomerRateForWeekend;
+	}
+
+	public void setRewardCustomerRateForWeekend(int rate) {
+		this.rewardCustomerRateForWeekend = rate;
+	}
+	public long getTotalRate() {
+		return totalRate;
+	}
+
+	public void setTotalRate(long rate) {
+		this.totalRate = rate;
+	}
+
+	
+	
 	public double getRating() {
 		return rating;
 	}
@@ -70,9 +85,6 @@ public class Hotel {
 	
 	@Override
 	public String toString() {
-		return "\nHotel Name: " + hotelName
-				+ "\nHotel rates for a regular customer (per day): \nFor Weekdays(Mon-Sat) : "
-				+ regularCustomerRateForWeekday + "$ \nFor Weekends(Sun): " + regularCustomerRateForWeekend
-				+ "$ \nRating: " + rating + "/5.0 ";
+		return "\nHotel Name: " + hotelName + "\nRating: " + rating + " ";
 	}
 }
