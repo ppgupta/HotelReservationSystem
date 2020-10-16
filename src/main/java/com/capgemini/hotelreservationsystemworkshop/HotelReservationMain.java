@@ -6,6 +6,8 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
+import java.util.Comparator;
+
 public class HotelReservationMain 
 {
 	private ArrayList<Hotel> hotelList = new ArrayList<Hotel>();
@@ -14,24 +16,16 @@ public class HotelReservationMain
 		hotelList.add(newHotel);
 		return true;
 	}
-	public int findMinimumPrice() {
-		int minPrice = hotelList.get(0).calculatePrice();
-		for (Hotel hotel : hotelList) {
-			int price = hotel.calculatePrice();
-			if (price < minPrice)
-				minPrice = price;
-		}
-		return minPrice;
-	}
-
-	public String findTheCheapestHotel() {
-		for (Hotel hotel : hotelList) {
-			if (findMinimumPrice() == hotel.calculatePrice())
-				return hotel.getHotelName();
-		}
-		return null;
-	}
 	
+	public Hotel findCheapestHotel(Date start, Date end) {
+		long noOfDays = (1 + (end.getTime() - start.getTime())) / (1000 * 60 * 60 * 24);
+		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getRegularCustomerRate)).findFirst()
+				.orElse(null);
+		int  totalCostOfStay = (int) (noOfDays * cheapestHotel.getRegularCustomerRate());
+		cheapestHotel.setTotalRate(totalCostOfStay);
+		return cheapestHotel;
+
+	}
 	
 	 public  String display()
 	    {  

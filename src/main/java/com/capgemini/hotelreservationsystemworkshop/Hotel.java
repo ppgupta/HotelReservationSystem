@@ -44,16 +44,8 @@ public class Hotel {
 	public void setTotalRate(int rate) {
 		this.totalRate = rate;
 	}
-	public int calculateNumberOfDays(String startDate, String endDate) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMMyyyy");
-		LocalDate localStartDate = LocalDate.parse(startDate, formatter);
-		LocalDate localEndDate = LocalDate.parse(endDate, formatter);
-		return Period.between(localStartDate, localEndDate).getDays();
-	}
-
-	public int calculatePrice() {
-		return calculateNumberOfDays(startDate, endDate) * totalRate;
-	}
+	
+	
 	@Override
 	public String toString() {
 		return "\nHotel Name: " + hotelName + "\nHotel rates for a regular customer (per day): " + regularCustomerRate
