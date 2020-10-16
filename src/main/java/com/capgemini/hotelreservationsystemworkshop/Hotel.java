@@ -13,10 +13,7 @@ public class Hotel {
 	private double rating;
 
 	// parameterized constructor
-	public Hotel(String hotelName, int regularCustomerRate) {
-		this.hotelName = hotelName;
-		this.regularCustomerRate = regularCustomerRate;
-	}
+	
 	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend,double rating) {
 		this.hotelName = hotelName;
 		this.regularCustomerRateForWeekday = regularCustomerRateForWeekday;

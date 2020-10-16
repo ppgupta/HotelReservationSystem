@@ -37,5 +37,6 @@ public class HoteReservationSystemTest {
 		long weekDays = service.countWeekDays(start, end);
 		Hotel found = service.findCheapestHotel(start, end, weekDays);
 		Assert.assertEquals("Lakewood", found.getHotelName());
-}
+
+	}
 }
