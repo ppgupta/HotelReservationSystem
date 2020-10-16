@@ -10,16 +10,20 @@ public class Hotel {
 	private long totalRate;
 	private int regularCustomerRateForWeekday;
 	private int regularCustomerRateForWeekend;
+	private double rating;
+
 	// parameterized constructor
 	public Hotel(String hotelName, int regularCustomerRate) {
 		this.hotelName = hotelName;
 		this.regularCustomerRate = regularCustomerRate;
 	}
-	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend) {
+	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend,double rating) {
 		this.hotelName = hotelName;
 		this.regularCustomerRateForWeekday = regularCustomerRateForWeekday;
 		this.regularCustomerRateForWeekend = regularCustomerRateForWeekend;
 		this.totalRate = 0;
+		this.rating = rating;
+
 	}
 	// getters and setters
 	public String getHotelName() {
@@ -58,6 +62,13 @@ public class Hotel {
 
 	public void setRegularCustomerRateForWeekend(int rate) {
 		this.regularCustomerRateForWeekend = rate;
+	}
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 	
 	@Override
