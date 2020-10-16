@@ -16,47 +16,127 @@ public class HotelReservationMain
 		hotelList.add(newHotel);
 		return true;
 	}
+	// method to find cheapest hotel with in a date range
 	
-	public Hotel findCheapestHotel(Date start, Date end) {
+	public Hotel findCheapestHotel(Date start, Date end, long weekDays) {
 		long noOfDays = (1 + (end.getTime() - start.getTime())) / (1000 * 60 * 60 * 24);
-		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getRegularCustomerRate)).findFirst()
-				.orElse(null);
-		int  totalCostOfStay = (int) (noOfDays * cheapestHotel.getRegularCustomerRate());
-		cheapestHotel.setTotalRate(totalCostOfStay);
-		return cheapestHotel;
+		long weekEnds = noOfDays - weekDays;
+		System.out.println("Weekdays: " + weekDays + " Weekends: " + weekEnds);
+		for (Hotel h : hotelList) {
+			long totalCostOfStay = (weekDays * h.getRegularCustomerRateForWeekday())
+					+ (weekEnds * h.getRegularCustomerRateForWeekend());
+			h.setTotalRate(totalCostOfStay);
 
+		}
+		Hotel cheapestHotel = hotelList.stream().sorted(Comparator.comparing(Hotel::getTotalRate)).findFirst()
+				.orElse(null);
+		return cheapestHotel;
 	}
+	
+	private long countWeekDays(Date start, Date end) {
+		long countWeekdays = 0;
+		long countWeekends = 0;
+		Calendar startCal = Calendar.getInstance();
+		startCal.setTime(start);
+
+		Calendar endCal = Calendar.getInstance();
+		endCal.setTime(end);
+		if (startCal.getTimeInMillis() > endCal.getTimeInMillis()) {
+			startCal.setTime(end);
+			endCal.setTime(start);
+		}
+
+		do {
+			// excluding start date
+			startCal.add(Calendar.DAY_OF_MONTH, 1);
+			if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY
+					&& startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+				++countWeekdays;
+			}
+		} while (startCal.getTimeInMillis() < endCal.getTimeInMillis()); // excluding end date
+
+		return countWeekdays;
+	}
+
+	// counts number of weekdays between two date ranges
+	public void printHotel() {
+		for (Hotel h : hotelList) {
+			System.out.println(h);
+		}
+	}
+
 	
 	 public  String display()
 	    {  
 	        String str1= "Welcome to hotel Reservation System" ;
 	        return str1;
 	    }
-	 public static void main(String[]args) {
-	    	HotelReservationMain hotelReservation=new HotelReservationMain();
-	    	hotelReservation.display();
+	 public static void main(String[] args) throws Exception {
+			Date startDate = null;
+			Date endDate = null;
 			Scanner sc = new Scanner(System.in);
-			Hotel hotel1 = new Hotel("Lakewood", 110);
-			Hotel hotel2 = new Hotel("Bridgewood", 160);
-			Hotel hotel3 = new Hotel("Ridgewood", 220);
-			hotelReservation.addHotel(hotel1);
-			hotelReservation.addHotel(hotel2);
-			hotelReservation.addHotel(hotel3);
+			System.out.println("Welcome to Hotel Reservation Program!");
+			HotelReservationMain service = new HotelReservationMain();
+			Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+			Hotel hotel2 = new Hotel("Bridgewood", 150, 50);
+			Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
+			service.addHotel(hotel1);
+			service.addHotel(hotel2);
+			service.addHotel(hotel3);
 			while (true) {
-				System.out.println("Do you wish to add a new Hotel to the System?(y/n)");
-				String choice = sc.nextLine();
-				if (choice.equalsIgnoreCase("y")) {
-					System.out.println("Enter the Name of the Hotel: ");
-					String name = sc.nextLine();
-					System.out.println("Enter the rates of the Hotel for a Regular Customer: ");
-					int rates = Integer.parseInt(sc.nextLine());
-					Hotel newHotel = new Hotel(name, rates);
-					hotelReservation.addHotel(newHotel);
-					System.out.println("Hotel " + name + " added to the Hotel Reservation");
-				} else {
-					System.out.println("Thankyou");
+				System.out.println(
+						"\n1.Add a Hotel \n2.Find the cheapest Hotel \n3.Display the Hotel list \n4.Exit \nEnter your choice: ");
+				int option = Integer.parseInt(sc.nextLine());
+				switch (option) {
+				case 1:
+					while (true) {
+						System.out.println("Do you wish to add a new Hotel to the System?(y/n)");
+						String choice = sc.nextLine();
+						if (choice.equalsIgnoreCase("y")) {
+							System.out.println("Enter the Name of the Hotel: ");
+							String name = sc.nextLine();
+							System.out
+									.println("Enter the rates of the Hotel for a Regular Customer for Weekdays(Mon-Sat): ");
+							int ratesForWeekdays = Integer.parseInt(sc.nextLine());
+							System.out.println("Enter the rates of the Hotel for a Regular Customer for Weekends(Sun): ");
+							int ratesForWeekends = Integer.parseInt(sc.nextLine());
+							Hotel newHotel = new Hotel(name, ratesForWeekdays, ratesForWeekends);
+							service.addHotel(newHotel);
+							System.out.println("Hotel " + name + " added to the Hotel Reservation System!\n");
+						} else {
+
+							break;
+						}
+					}
 					break;
+				case 2:
+					try {
+						System.out.println("Enter start date of the stay :");
+						String start = sc.nextLine();
+						startDate = new SimpleDateFormat("ddMMMyyyy").parse(start);
+						System.out.println("Enter end date of the stay:");
+						String end = sc.nextLine();
+						endDate = new SimpleDateFormat("ddMMMyyyy").parse(end);
+					} catch (Exception e) {
+						System.out.println(e.getMessage());
+					}
+					long weekDays = service.countWeekDays(startDate, endDate);
+					Hotel found = service.findCheapestHotel(startDate, endDate, weekDays);
+					System.out.println(found);
+					System.out.println("Total cost of stay: " + found.getTotalRate() + "$ .");
+					break;
+
+				case 3:
+					System.out.println("\nThe Hotel list is as follows: ");
+					service.printHotel();
+					break;
+				case 4:
+					System.out.println("Thankyou for using the application!");
+					System.exit(0);
+					break;
+
 				}
+
 			}
-	    }
+		}
 }

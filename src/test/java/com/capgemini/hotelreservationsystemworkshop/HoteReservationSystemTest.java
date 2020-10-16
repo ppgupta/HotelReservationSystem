@@ -16,12 +16,13 @@ public class HoteReservationSystemTest {
 		boolean checkIfAdded = service.addHotel(hotelCheck);
 		Assert.assertEquals(checkIfAdded, true);
 	}
+	
 	@Test
-	public void testForcheapestHotelWithinADateRange() {
+	public void testForcheapestHotelWithinADateRange_AccoringToWeekdayCharges() {
 		HotelReservationMain service = new HotelReservationMain();
-		Hotel hotel1 = new Hotel("Lakewood", 110);
-		Hotel hotel2 = new Hotel("Bridgewood", 150);
-		Hotel hotel3 = new Hotel("Ridgewood", 220);
+		Hotel hotel1 = new Hotel("Lakewood", 110, 90);
+		Hotel hotel2 = new Hotel("Bridgewood", 150, 50);
+		Hotel hotel3 = new Hotel("Ridgewood", 220, 150);
 		service.addHotel(hotel1);
 		service.addHotel(hotel2);
 		service.addHotel(hotel3);

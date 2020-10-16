@@ -7,19 +7,19 @@ import java.time.format.DateTimeFormatter;
 public class Hotel {
 	private String hotelName;
 	private int regularCustomerRate;
-	private int totalRate;
-	private String startDate, endDate;
-
+	private long totalRate;
+	private int regularCustomerRateForWeekday;
+	private int regularCustomerRateForWeekend;
 	// parameterized constructor
 	public Hotel(String hotelName, int regularCustomerRate) {
 		this.hotelName = hotelName;
 		this.regularCustomerRate = regularCustomerRate;
 	}
-	public Hotel(String hotelName, int rate, String startDate, String endDate) {
+	public Hotel(String hotelName, int regularCustomerRateForWeekday, int regularCustomerRateForWeekend) {
 		this.hotelName = hotelName;
-		this.totalRate = rate;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.regularCustomerRateForWeekday = regularCustomerRateForWeekday;
+		this.regularCustomerRateForWeekend = regularCustomerRateForWeekend;
+		this.totalRate = 0;
 	}
 	// getters and setters
 	public String getHotelName() {
@@ -41,10 +41,24 @@ public class Hotel {
 		return totalRate;
 	}
 
-	public void setTotalRate(int rate) {
-		this.totalRate = rate;
+	public void setTotalRate(long totalCostOfStay) {
+		this.totalRate = totalCostOfStay;
 	}
-	
+	public int getRegularCustomerRateForWeekday() {
+		return regularCustomerRateForWeekday;
+	}
+
+	public void setRegularCustomerRateForWeekday(int rate) {
+		this.regularCustomerRateForWeekday = rate;
+	}
+
+	public int getRegularCustomerRateForWeekend() {
+		return regularCustomerRateForWeekend;
+	}
+
+	public void setRegularCustomerRateForWeekend(int rate) {
+		this.regularCustomerRateForWeekend = rate;
+	}
 	
 	@Override
 	public String toString() {
